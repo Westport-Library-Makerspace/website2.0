@@ -14,7 +14,7 @@ var newUser = false;
 
 $('#login').click(function(){
 
-  firebase.auth().createUserWithEmailAndPassword(email.value, password.value).catch(function(error){
+  firebase.auth().signInWithEmailAndPassword(email.value, password.value).catch(function(error){
 
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -37,7 +37,7 @@ firebase.auth().onAuthStateChanged(function(user) {
    }).then(function(){
       newUser=false;
      window.location = "/";
-   });   
+   });
   }
 
   } else {
