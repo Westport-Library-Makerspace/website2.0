@@ -11,10 +11,10 @@ app.get('/', function (req, res) {
 });
 
 app.get('/login', function (req, res) {
-  res.render('login', {layout: false});
+  res.render('login');
 });
 
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Server port listening on port 3000!');
 });

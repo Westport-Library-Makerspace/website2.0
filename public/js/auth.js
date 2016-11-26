@@ -8,13 +8,27 @@ var config = {
 firebase.initializeApp(config);
 var currentUser = firebase.auth().currentUser;
 
-const email = document.getElementById('email-input');
-const password = document.getElementById('password-input');
+const emailInput = document.getElementById('emailInput');
+const passwordInput = document.getElementById('passwordInput');
+const firstNameInput = document.getElementById('firstNameInput');
+const lastNameInput = document.getElementById('lastNameInput');
+const ageInput = document.getElementById('ageInput');
+
+var email;
+var password;
+var firstName;
+var lastName;
+var age;
+
 var newUser = false;
 
-$('#login').click(function(){
-
-  firebase.auth().signInWithEmailAndPassword(email.value, password.value).catch(function(error){
+$('#newUser').click(function(){
+  email = emailInput.value;
+  password = passwordInput.value;
+  firstName = firstNameInput.value;
+  lastName = lastNameInput.value;
+  age = ageInput.value;
+  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
 
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -23,16 +37,20 @@ $('#login').click(function(){
   }).then(function(){
       newUser = true;
   });
-  // email.value = "";
-  // password.value = "";
+   email.value = "";
+   password.value = "";
 });
+
+
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
 
     if(newUser){
       firebase.database().ref('users/' + user.uid).set({
-     //username: currentname,
-     email: user.email
+     email: user.email,
+     firstName: firstName,
+     lastName: lastName,
+     age: age
 
    }).then(function(){
       newUser=false;
