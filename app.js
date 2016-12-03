@@ -7,11 +7,15 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.get('/', function (req, res) {
-  res.render('landing');
+  res.render('landing', {layout: 'layout_landing'});
 });
 
 app.get('/login', function (req, res) {
-  res.render('login');
+  res.render('login', {layout: 'layout_landing'});
+});
+
+app.get('/admin', function(req,res){
+  res.render('admin');
 });
 
 

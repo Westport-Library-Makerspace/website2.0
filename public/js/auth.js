@@ -8,27 +8,31 @@ var config = {
 firebase.initializeApp(config);
 var currentUser = firebase.auth().currentUser;
 
-const emailInput = document.getElementById('emailInput');
-const passwordInput = document.getElementById('passwordInput');
-const firstNameInput = document.getElementById('firstNameInput');
-const lastNameInput = document.getElementById('lastNameInput');
-const ageInput = document.getElementById('ageInput');
+const createEmailInput = document.getElementById('createEmailInput');
+const createPasswordInput = document.getElementById('createPasswordInput');
+const createFirstNameInput = document.getElementById('createFirstNameInput');
+const createLastNameInput = document.getElementById('createLastNameInput');
+const createAgeInput = document.getElementById('createAgeInput');
+const loginEmailInput = document.getElementById('loginEmailInput');
+const loginPasswordInput = document.getElementById('loginPasswordInput');
 
-var email;
-var password;
-var firstName;
-var lastName;
-var age;
+var createEmail;
+var createPassword;
+var createFirstName;
+var createLastName;
+var createAge;
+var loginEmail;
+var loginPassword;
 
 var newUser = false;
 
 $('#newUser').click(function(){
-  email = emailInput.value;
-  password = passwordInput.value;
-  firstName = firstNameInput.value;
-  lastName = lastNameInput.value;
-  age = ageInput.value;
-  firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error){
+  createEmail = createEmailInput.value;
+  createPassword = createPasswordInput.value;
+  createFirstName = createFirstNameInput.value;
+  createLastName = createLastNameInput.value;
+  createAge = createAgeInput.value;
+  firebase.auth().createUserWithEmailAndPassword(createEmail, createPassword).catch(function(error){
 
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -37,8 +41,18 @@ $('#newUser').click(function(){
   }).then(function(){
       newUser = true;
   });
-   email.value = "";
-   password.value = "";
+   emailInput.value = "";
+   passwordInput.value = "";
+});
+
+$('#loginUser').click(function(){
+  loginEmail = loginEmailInput.value;
+  loginPassword = loginPasswordInput.value;
+  firebase.auth().signInWithEmailAndPassword(loginEmail, loginPassword).catch(function(error){
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(errorMessage);
+  });
 });
 
 
@@ -48,9 +62,9 @@ firebase.auth().onAuthStateChanged(function(user) {
     if(newUser){
       firebase.database().ref('users/' + user.uid).set({
      email: user.email,
-     firstName: firstName,
-     lastName: lastName,
-     age: age
+     firstName: createFirstName,
+     lastName: createLastName,
+     age: createAge
 
    }).then(function(){
       newUser=false;
