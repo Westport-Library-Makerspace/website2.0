@@ -9,8 +9,11 @@
   "author": "Nathanael Metke",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.16.0",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.2",
     "express": "^4.14.0",
-    "express-partials": "^0.3.0"
+    "express-partials": "^0.3.0",
+    "firebase-admin": "^4.0.6"
   }
 }

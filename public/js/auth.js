@@ -5,16 +5,19 @@ var config = {
   storageBucket: "makerspace-6d561.appspot.com",
   messagingSenderId: "92352190485"
 };
+
 firebase.initializeApp(config);
+
+
 var currentUser = firebase.auth().currentUser;
 
-const createEmailInput = document.getElementById('createEmailInput');
-const createPasswordInput = document.getElementById('createPasswordInput');
-const createFirstNameInput = document.getElementById('createFirstNameInput');
-const createLastNameInput = document.getElementById('createLastNameInput');
-const createAgeInput = document.getElementById('createAgeInput');
-const loginEmailInput = document.getElementById('loginEmailInput');
-const loginPasswordInput = document.getElementById('loginPasswordInput');
+var createEmailInput = document.getElementById('createEmailInput');
+var createPasswordInput = document.getElementById('createPasswordInput');
+var createFirstNameInput = document.getElementById('createFirstNameInput');
+var createLastNameInput = document.getElementById('createLastNameInput');
+var createAgeInput = document.getElementById('createAgeInput');
+var loginEmailInput = document.getElementById('loginEmailInput');
+var loginPasswordInput = document.getElementById('loginPasswordInput');
 
 var createEmail;
 var createPassword;
@@ -48,17 +51,22 @@ $('#newUser').click(function(){
 $('#loginUser').click(function(){
   loginEmail = loginEmailInput.value;
   loginPassword = loginPasswordInput.value;
+  //$.post("/loginToken", {loginEmail: loginEmail, loginPassword: loginPassword});
+  console.log("Logging in!");
   firebase.auth().signInWithEmailAndPassword(loginEmail, loginPassword).catch(function(error){
     var errorCode = error.code;
     var errorMessage = error.message;
     console.log(errorMessage);
+  }).then(function(){
+    newUser = false;
+    setCookie();
   });
 });
 
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-
+    console.log("User Logged in?");
     if(newUser){
       firebase.database().ref('users/' + user.uid).set({
      email: user.email,
@@ -68,11 +76,21 @@ firebase.auth().onAuthStateChanged(function(user) {
 
    }).then(function(){
       newUser=false;
-     window.location = "/";
    });
+
   }
 
+  setCookie();
+  window.location = '/';
+
   } else {
-    // No user is signed in.
+    console.log("No user is logged in");
   }
 });
+
+function setCookie(){
+  firebase.auth().currentUser.getToken(true).then(function(idToken){
+    document.cookie =  "token="+idToken+";expires=" + moment().add(7, 'days').format("ddd, D MMM YYYY hh:mm:ss") + " UTC;path=/";
+    console.log(document.cookie);
+  });
+}
