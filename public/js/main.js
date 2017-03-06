@@ -16,7 +16,7 @@ var lastName;
 //console.log(moment().format("ddd, D MMM YYYY hh:mm:ss"));
 
 
-
+  //$('.log-btn').html('<a class="page-scroll " href="/login"></a>');
 $('#training-submit').click(function(){
   var date = $input.get('select');
   var day = moment(date.getISOString);
@@ -34,14 +34,18 @@ $('#training-submit').click(function(){
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     firebase.auth().currentUser.getToken(true).then(function(idToken){
-      console.log(idToken);
 
       //$.post("/loginToken", {idToken: idToken});
     });
     var name;
+
+
+
+  }
+  else{
     // No user is signed in.
     console.log("Not Logged in!");
-    $('.log-btn').html('<a class="page-scroll " href="/login">'+ <%= user %> +'</a>');
+    unsetCookie();
   }
 });
 

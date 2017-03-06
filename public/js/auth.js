@@ -60,6 +60,7 @@ $('#loginUser').click(function(){
   }).then(function(){
     newUser = false;
     setCookie();
+
   });
 });
 
@@ -69,6 +70,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     console.log("User Logged in?");
     if(newUser){
       firebase.database().ref('users/' + user.uid).set({
+      uid: user.uid,
      email: user.email,
      firstName: createFirstName,
      lastName: createLastName,
@@ -77,20 +79,26 @@ firebase.auth().onAuthStateChanged(function(user) {
    }).then(function(){
       newUser=false;
    });
-
   }
-
   setCookie();
-  window.location = '/';
+
 
   } else {
     console.log("No user is logged in");
+    unsetCookie();
   }
 });
 
 function setCookie(){
   firebase.auth().currentUser.getToken(true).then(function(idToken){
     document.cookie =  "token="+idToken+";expires=" + moment().add(7, 'days').format("ddd, D MMM YYYY hh:mm:ss") + " UTC;path=/";
+    console.log(document.cookie);
+  });
+}
+
+function unsetCookie(){
+  firebase.auth().currentUser.getToken(true).then(function(idToken){
+    document.cookie =  "token=;expires= UTC;path=";
     console.log(document.cookie);
   });
 }

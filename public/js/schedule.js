@@ -12,7 +12,8 @@ $('#coach-submit').click(function(){
   var day = date + " " + time ;
 
   day = moment(day, ['DDMMMMY HH:mm a']);
-  firebase.database().ref('users/' + userId + '/schedule_times/' + day.day()).set({
+  console.log(day.format('dd'));
+  firebase.database().ref('users/' + userId + '/schedule_times/' + day.format('ddd')).set({
     training_uid: '00000000-0000-0000-0000-000000000000',
     start_time: day.format(),
     end_time: day.add(2, 'hour').format()
@@ -30,7 +31,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     //userPerm = firebase.database().ref('users/' + userId);
     firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
-      
+
       if(snapshot.val().type == "coach"){
       console.log("User found!");
     }

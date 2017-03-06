@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var cookieParser = require('cookie-parser');
 var app = express();
+var moment = require('moment');
 
 var admin = require("firebase-admin");
 
@@ -23,7 +24,20 @@ var jsonParser = bodyParser.json();
 app.get('/', function (req, res) {
   var token = req.cookies.token;
   var firstName;
-  res.render('landing', {layout:'layout_landing'});
+  if(token){
+  admin.auth().verifyIdToken(token).then(function(decodedToken){
+    admin.database().ref("/users/" + decodedToken.uid).ref.on("value", function(snapshot){
+      console.log(snapshot.val());
+      res.render('landing',{layout:'layout_landing', userFirstName: snapshot.val().firstName});
+    });
+
+  }).catch(function(){
+    res.render('landing',{layout:'layout_landing', userFirstName: "Login"});
+  });
+}
+else{
+  res.render('landing',{layout:'layout_landing', userFirstName: "Login"});
+}
 
 
 });
@@ -33,18 +47,73 @@ app.get('/login', function (req, res) {
   console.log(token);
   if(!token){
   admin.auth().verifyIdToken(token).then(function(decodedToken){
+
     }).catch(function(error){
       res.render('login');
       console.log("Error! no user records found!");
     });
   }
 else{
-  res.redirect('/');
+  admin.auth().verifyIdToken(token).then(function(decodedToken){
+  }).catch(function(){
+    res.redirect('/');
+  });
+
+  res.render('login');
+
 }
 });
 
+
+app.get('/training/:id', urlencodedParser, function(req,res){
+  var id = req.params.id;
+  var dayOfWeek = moment(id).format("ddd");
+  console.log(dayOfWeek);
+  var coaches = [];
+
+  admin.database().ref("/users/").ref.on("value", function(snapshot){
+    snapshot.forEach(function(child){
+    if(child.val().schedule_times){
+
+//.start_time + "`" + child.val().uid);
+
+//TODO PLEASE MAKE THIS BETTER
+  console.log(dayOfWeek);
+      switch(dayOfWeek){
+        case "Mon":
+          coaches.push(child.val().schedule_times.Mon.start_time + "`" + child.val().uid);
+          break;
+        case "Tue":
+          coaches.push(child.val().schedule_times.Tue.start_time + "`" + child.val().uid);
+          break;
+        case "Wed":
+          coaches.push(child.val().schedule_times.Wed.start_time + "`" + child.val().uid);
+          break;
+        case "Thu":
+          coaches.push(child.val().schedule_times.Thu.start_time + "`" + child.val().uid);
+          break;
+        case "Fri":
+          coaches.push(child.val().schedule_times.Fri.start_time + "`" + child.val().uid);
+          break;
+        case "Sat":
+          coaches.push(child.val().schedule_times.Sat.start_time + "`" + child.val().uid);
+          break;
+        case "Sun":
+          coaches.push(child.val().schedule_times.Sun.start_time + "`" + child.val().uid);
+          break;
+      }
+
+    }
+  });
+
+});
+res.render("training", {coaches: coaches});
+});
+
+
+
 app.get('/training', function(req,res){
-  res.render('training');
+    res.render('training', {coaches: null});
 });
 
 app.get('/admin', function(req,res){
@@ -52,7 +121,16 @@ app.get('/admin', function(req,res){
 });
 
 app.get('/coach-schedule', function(req, res){
-  res.render('coach_schedule');
+  token = req.cookies.token;
+  if(token){
+    admin.auth().verifyIdToken(token).then(function(decodedToken){
+      res.render('coach_schedule');
+    }).catch(function(){
+      res.redirect('/');
+    });
+}else{
+  res.redirect('/');
+}
 });
 
 

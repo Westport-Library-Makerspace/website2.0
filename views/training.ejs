@@ -1,12 +1,22 @@
 <div class="col-md-4"></div>
 <div class="col-md-4">
+  <% if(coaches == null){ %>
   <input class="form-control" type="email" placeholder="Email" id="email-input">
   <input class="form-control" type="text" placeholder="First Name" id="firstName-input">
   <input class="form-control" type="text" placeholder="Last Name" id="lastName-input">
   <input class="form-control" type="text" placeholder="Date" id="date-input">
+  <% } else { %>
   <input class="form-control" type="text" placeholder="Time" id="time-input">
+  <%}%>
   <button class="btn btn-primary" type="submit" id="training-submit">Submit</button>
 </div>
 
-
+<% if(coaches != null){ %>
+  <% for(var i = 0; i < coaches.length; i++){  %>
+      <button class="final_submit" id= <%= coaches[i].split("`")[1] %> + ""><%=coaches[i].split("`")[0] %></button>
+    <% } %>
+<% } %>
+<script>
+//  var coaches = <%= JSON.stringify(coaches) %>
+</script>
 <script src="/js/training.js"></script>
