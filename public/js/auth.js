@@ -60,7 +60,10 @@ $('#loginUser').click(function(){
   }).then(function(){
     newUser = false;
     setCookie();
+    //window.location="/";
 
+  }).then(function(){
+    window.location.replace("/");
   });
 });
 
@@ -84,14 +87,15 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 
   } else {
-    console.log("No user is logged in");
-    unsetCookie();
+  //  console.log("No user is logged in");
+  //  unsetCookie();
   }
 });
+//TODO Find a better way to do this
 
 function setCookie(){
   firebase.auth().currentUser.getToken(true).then(function(idToken){
-    document.cookie =  "token="+idToken+";expires=" + moment().add(7, 'days').format("ddd, D MMM YYYY hh:mm:ss") + " UTC;path=/";
+    document.cookie =  "token="+idToken+",expires=" + moment().add(1, 'month').format("ddd, D MMM YYYY hh:mm:ss") + " UTC,path=/";
     console.log(document.cookie);
   });
 }

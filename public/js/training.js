@@ -1,3 +1,14 @@
+var config = {
+  apiKey: "AIzaSyAGgBQTSn3zGYe5Gt18VhLBS7l0tsjh-Uo",
+  authDomain: "makerspace-6d561.firebaseapp.com",
+  databaseURL: "https://makerspace-6d561.firebaseio.com",
+  storageBucket: "makerspace-6d561.appspot.com",
+  messagingSenderId: "92352190485"
+};
+
+
+
+firebase.initializeApp(config);
 var users;
 var $email = $('#email-input');
 var $firstName = $('#firstName-input');
@@ -10,9 +21,10 @@ var $time = $('#time-input').pickatime();
 $('#training-submit').click(function(){
 
 
-  datePicked = $('#date-input').value;
+  datePicked = $('#date-input').val();
   date = moment(datePicked).format();
   dateUTC = moment(datePicked).format();
+  console.log(datePicked);
   console.log($email.val());
   localStorage.setItem("email", $email.val());
   localStorage.setItem("firstName", $firstName.val());
@@ -49,11 +61,11 @@ $(".final_submit").click(function(event){
         email: localStorage.getItem("email"),
         firstName: localStorage.getItem("firstName"),
         lastName: localStorage.getItem("lastName"),
-        date: localStorage.getItem("date"),
+        date: moment(event.target.data_time).format(),
         uid: userUID,
         coach_uid: event.target.id
     }).then(function(){
-      firebase.database().ref("user" + event.target.id + "/trainings/" + userUID).push({
+      firebase.database().ref("users/" + event.target.id + "/trainings/" + userUID).push({
            training_uid: userUID,
            date: localStorage.getItem("date")
     });

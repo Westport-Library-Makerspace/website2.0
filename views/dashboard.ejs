@@ -1,0 +1,42 @@
+<h1>Welcome, <%= user.firstName %> <%= user.lastName%></h1>
+
+<hr />
+
+
+<div class="col-md-4">
+  <h3>Current Trainings</h3>
+  <table>
+    <tbody class="">
+      <% for(var key in training_list){ %>
+        <tr>
+        <td>
+        <%= training_list[key] %>
+        </td>
+        </tr>
+      <%}%>
+    </tbody>
+  </table></div>
+<div class="col-md-4">
+  <h3>Add Coaching Time</h3>
+  <label>Coaching Date</label>
+  <input class="form-control" type="text" placeholder="Date" id="date-input">
+  <label>Coaching Time</label>
+  <input class="form-control" type="text" placeholder="Time" id="time-input">
+  <button class="btn btn-primary" type="submit" id="coach-submit">Submit</button>
+</div>
+
+<div class="col-md-4">
+  <h3>Current Coaching Times</h3>
+  <table>
+  <tbody class="">
+    <% for(var key in user.schedule_times){ %>
+      <tr>
+      <div class="time-format" +<%key%>
+        <%= user.schedule_times[key].start_time%>
+      </div>
+
+      </tr>
+    <%}%>
+  </tbody>
+</table></div>
+</div>

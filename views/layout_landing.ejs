@@ -29,6 +29,8 @@
         <link href="css/creative.css" rel="stylesheet">
 
 
+
+
   </head>
   <body>
 
@@ -55,7 +57,25 @@
                           <a class="page-scroll" href="#portfolio">Classes</a>
                       </li>
                       <li class="log-btn">
-                          <a class="page-scroll " href="/login"><%= userFirstName %></a>
+                        <% if(userFirstName != "Login"){ %>
+                        <a class="dropdown page-scroll" data-toggle="dropdown">
+
+                            <%= userFirstName %>
+                            <span class="caret"></span>
+
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="/dashboard">Dashboard</a></li>
+                            <li><a href="#"></a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider">
+                            <li><a href="/admin">Admin Page</a></li>
+                            </li><li role="separator" class="divider"></li>
+                            <li><a class="logout">Logout</a></li>
+                          </ul>
+                        </a>
+                        <% } else {%>
+                          <a href="/login"> Login </a>
+                        <% }%>
                       </li>
                   </ul>
               </div>
@@ -82,6 +102,10 @@
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
     <!-- Theme JavaScript -->
+    <script src="/bower_components/moment/moment.js"></script>
+    <script src="/bower_components/pickadate/lib/picker.js"></script>
+    <script src="/bower_components/pickadate/lib/picker.date.js"></script>
+    <script src="/bower_components/pickadate/lib/picker.time.js"></script>
 
     <script src="js/creative.js"></script>
     <script src="js/main.js"></script>

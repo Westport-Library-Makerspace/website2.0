@@ -4,7 +4,8 @@
     // jQuery for page scrolling feature - requires jQuery Easing plugin
     $('a.page-scroll').bind('click', function(event) {
         var $anchor = $(this);
-        $('html, body').stop().animate({
+
+        $('body, html').stop().animate({
             scrollTop: ($($anchor.attr('href')).offset().top - 50)
         }, 1250, 'easeInOutExpo');
         event.preventDefault();
@@ -26,7 +27,7 @@
         offset: {
             top: 100
         }
-    })
+    });
 
     // Initialize and Configure Scroll Reveal Animation
     window.sr = ScrollReveal();

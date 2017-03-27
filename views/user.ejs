@@ -1,0 +1,9 @@
+
+<center><h1><%= page_user.firstName %> <%= page_user.lastName %></h1></center>
+<table>
+  <% for(var key in page_user.schedule_times){ %>
+      <%if((page_user.schedule_times).hasOwnProperty(key)){%>
+        <div class="time-format"> <%= page_user.schedule_times[key].start_time %> </div>
+      <%}%>
+  <%}%>
+</table>

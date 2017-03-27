@@ -1,22 +1,30 @@
+<div class="container">
 <div class="col-md-4"></div>
 <div class="col-md-4">
-  <% if(coaches == null){ %>
   <input class="form-control" type="email" placeholder="Email" id="email-input">
   <input class="form-control" type="text" placeholder="First Name" id="firstName-input">
   <input class="form-control" type="text" placeholder="Last Name" id="lastName-input">
   <input class="form-control" type="text" placeholder="Date" id="date-input">
-  <% } else { %>
-  <input class="form-control" type="text" placeholder="Time" id="time-input">
-  <%}%>
   <button class="btn btn-primary" type="submit" id="training-submit">Submit</button>
-</div>
 
-<% if(coaches != null){ %>
+</div>
+<div class="col-md-4"></div>
+</div>
+<div class="containter">
+<% if(coaches){ %>
+<% if(coaches.length > 0 && time){ %>
   <% for(var i = 0; i < coaches.length; i++){  %>
-      <button class="final_submit" id= <%= coaches[i].split("`")[1] %> + ""><%=coaches[i].split("`")[0] %></button>
+      <button class="final_submit btn btn-success" data_time="" + <%=coaches[i].split("`")[0]%>  id= <%= coaches[i].split("`")[1] %> + ""><%=coaches[i].split("`")[0] %> </button>
     <% } %>
 <% } %>
-<script>
-//  var coaches = <%= JSON.stringify(coaches) %>
-</script>
+
+
+<% if(coaches.length == 0 && time){%>
+<h3 class="alert alert-danger center">No Coaches availible for today!</h3>
+<h4 class="alert alert-info center">Please enter the info above again, and try another date</h4>
+<%}%><%}%>
+</div>
+
+
+
 <script src="/js/training.js"></script>
